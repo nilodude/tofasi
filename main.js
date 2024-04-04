@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -13,7 +14,7 @@ let scaleMouseY = 500
 let mausY = 0
 window.addEventListener('mousemove', (event)=>{
     mausY = event.clientY
-    console.log(mausY/scaleMouseY)
+    // console.log(mausY/scaleMouseY)
 })
 const directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
 scene.add( directionalLight );
@@ -45,6 +46,23 @@ for(let i = 0; i<= num;i++){
 
 camera.position.z = 5;
 
+const loader = new GLTFLoader();
+// loader.load( "https://ipfs.io/ipfs/QmYqwNYxqmu4z39emTo7h9D62rbwm1esAmbAf2PctAyUvu?filename=Flamingo.glb", function ( gltf ) {
+// 		let flamingoMesh = gltf.scene.children[ 0 ];
+// 		/* flamingoMesh.scale.set( 0.30, 0.30, 0.30 ); */
+//     flamingoMesh.rotation.y = -15;
+    
+//     scene.add(flamingoMesh);
+// 	} );
+loader.load( 'models/coche/coche2.glb', function ( gltf ) {
+    console.log(gltf)
+	scene.add( gltf.scene );
+
+}, undefined, function ( error ) {
+
+	console.error( error );
+
+} );
 
 function animate() {
 	
