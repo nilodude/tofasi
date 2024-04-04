@@ -5,16 +5,14 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+camera.position.z = 500
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 const controls = new OrbitControls( camera, renderer.domElement );
-
-let scaleMouseY = 500
 let mausY = 0
 window.addEventListener('mousemove', (event)=>{
     mausY = event.clientY
-    // console.log(mausY/scaleMouseY)
 })
 const directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
 scene.add( directionalLight );
@@ -39,12 +37,15 @@ for(let i = 0; i<= num;i++){
     const geometry = new THREE.BoxGeometry( 1, 1, 1 );
     const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
     const cube = new THREE.Mesh( geometry, material )
-    cube.position.x = 2*i - cubes.length -num/2
+    // cube.position.x = 2*i - cubes.length - num/2
+    cube.position.x = i/5* Math.cos(i)
+    cube.position.y = i/5* Math.sin(i)
+    cube.position.z = i
     cubes.push(cube)
     scene.add( cube );
 }
 
-camera.position.z = 5;
+camera.position.z = 50;
 
 const loader = new GLTFLoader();
 // loader.load( "https://ipfs.io/ipfs/QmYqwNYxqmu4z39emTo7h9D62rbwm1esAmbAf2PctAyUvu?filename=Flamingo.glb", function ( gltf ) {
@@ -54,7 +55,7 @@ const loader = new GLTFLoader();
     
 //     scene.add(flamingoMesh);
 // 	} );
-loader.load( 'models/coche/coche2.glb', function ( gltf ) {
+loader.load( 'models/coche/coche3/cocheBase.glb', function ( gltf ) {
     console.log(gltf)
 	scene.add( gltf.scene );
 
@@ -64,13 +65,14 @@ loader.load( 'models/coche/coche2.glb', function ( gltf ) {
 
 } );
 
+let scaleMouseY = 1000
 function animate() {
 	
     cubes.forEach(cube=>{
         cube.rotation.x += 0.01;
         cube.rotation.y += mausY/scaleMouseY;
 
-        cube.position.y = Math.sin(cube.rotation.y + cube.position.x)
+        // cube.position.y = Math.sin(cube.rotation.y + cube.position.x)
     })
     
     requestAnimationFrame( animate );
